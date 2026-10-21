@@ -1,0 +1,1 @@
+Copy the member_contributions folder in here (see the Lab 3 guide).

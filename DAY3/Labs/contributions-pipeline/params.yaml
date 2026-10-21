@@ -1,0 +1,22 @@
+# Every setting that changes an output of the pipeline lives here.
+# Git versions this file; DVC reruns a stage when a parameter it uses changes.
+
+seed: 42
+
+validate:
+  max_wage_tzs: 50000000        # monthly wages above this are treated as data-entry errors
+
+transform:
+  # Postings whose total contribution (employee + employer) is below this are excluded.
+  # Version 2 of the lab changes this value.
+  min_contribution_tzs: 0
+
+features:
+  cutoff_period: "2025-06"      # features use history up to and including this month
+  horizon_months: 3             # label: does the employer fall behind in the next 3 months?
+  history_months: 12            # how far back the features look
+  add_growth_3m: false          # version 2 of the lab switches this on
+
+train:
+  C: 1.0                        # inverse regularisation strength for logistic regression
+  review_capacity: 0.10         # the compliance team can follow up 10% of employers

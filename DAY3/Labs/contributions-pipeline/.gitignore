@@ -1,0 +1,7 @@
+# Python
+__pycache__/
+.venv/
+.ipynb_checkpoints/
+
+# Data, intermediate files and models are versioned by DVC, not Git.
+# `dvc add` and `dvc repro` write the matching .gitignore entries for you.

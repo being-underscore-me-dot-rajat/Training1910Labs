@@ -1,0 +1,5 @@
+# Keep line endings identical on every machine. DVC records a hash of each file,
+# and Windows line endings (CRLF) would make identical code look "changed".
+* text=auto eol=lf
+*.parquet binary
+*.joblib binary

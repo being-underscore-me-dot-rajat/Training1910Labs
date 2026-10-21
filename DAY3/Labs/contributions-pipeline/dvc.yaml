@@ -1,0 +1,50 @@
+# The pipeline. Each stage says what command to run, what it depends on (code, data, parameters)
+# and what it produces. `dvc repro` reruns only the stages whose dependencies have changed.
+stages:
+  validate:
+    cmd: python src/validate.py
+    deps:
+      - src/validate.py
+      - data/raw/member_contributions
+    params:
+      - validate
+    outs:
+      - data/interim/valid.parquet
+    metrics:
+      - reports/validation.json:
+          cache: false
+
+  transform:
+    cmd: python src/transform.py
+    deps:
+      - src/transform.py
+      - data/interim/valid.parquet
+    params:
+      - transform
+    outs:
+      - data/processed/employer_month.parquet
+
+  features:
+    cmd: python src/features.py
+    deps:
+      - src/features.py
+      - data/processed/employer_month.parquet
+    params:
+      - features
+    outs:
+      - data/processed/employer_features.parquet
+
+  train:
+    cmd: python src/train.py
+    deps:
+      - src/train.py
+      - data/processed/employer_features.parquet
+    params:
+      - seed
+      - train
+      - features.add_growth_3m
+    outs:
+      - models/arrears_model.joblib
+    metrics:
+      - reports/metrics.json:
+          cache: false
